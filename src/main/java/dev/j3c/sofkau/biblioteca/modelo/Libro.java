@@ -39,23 +39,55 @@ public class Libro {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getNombre() {
         return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getTipo() {
         return tipo;
     }
 
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
     public String getCategoria() {
         return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
     public Integer getUnidadesDisponibles() {
         return unidadesDisponibles;
     }
 
+    public void setUnidadesDisponibles(Integer unidadesDisponibles) {
+        this.unidadesDisponibles = unidadesDisponibles;
+    }
+
     public Integer getUnidadesPrestadas() {
         return unidadesPrestadas;
+    }
+
+    public void setUnidadesPrestadas(Integer unidadesPrestadas) {
+        this.unidadesPrestadas = unidadesPrestadas;
+    }
+
+    public LocalDateTime getFechaUltimoPrestamo() {
+        return fechaUltimoPrestamo;
+    }
+
+    public void setFechaUltimoPrestamo(LocalDateTime fechaUltimoPrestamo) {
+        this.fechaUltimoPrestamo = fechaUltimoPrestamo;
     }
 }
