@@ -32,6 +32,14 @@ public class LibroControlador {
         return new ResponseEntity(libroServicio.guardar(libroDTO), HttpStatus.CREATED);
     }
 
+    @PutMapping("/actualizar")
+    public ResponseEntity<LibroDTO> actualizarLibro(@RequestBody LibroDTO libroDTO) {
+        if (libroDTO.getId() != null) {
+            return new ResponseEntity(libroServicio.actualizar(libroDTO), HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
 
 
 }

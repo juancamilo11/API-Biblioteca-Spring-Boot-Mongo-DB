@@ -32,5 +32,9 @@ public class LibroServicio {
         return libroMapper.fromCollection(libroRepositorio.save(libro));
     }
 
-
+    public LibroDTO actualizar(LibroDTO libroDTO) {
+        Libro libro = libroMapper.fromDTO(libroDTO);
+        libroRepositorio.findById(libro.getId()).orElseThrow(() -> new RuntimeException("Recurso con id: " + libroDTO.getId() + " no encontrado."));
+        return libroMapper.fromCollection(libroRepositorio.save(libro));
+    }
 }
