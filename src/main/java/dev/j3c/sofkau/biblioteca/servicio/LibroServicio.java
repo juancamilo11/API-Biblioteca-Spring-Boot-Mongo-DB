@@ -43,4 +43,18 @@ public class LibroServicio {
         libroRepositorio.deleteById(id);
     }
 
+    private boolean isDisponible(String idLibro) {
+        if(getLibroPorId(idLibro).getUnidadesDisponibles() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public String consultarDisponibilidad(String id) {
+        LibroDTO libroDTO = getLibroPorId(id);
+        if(isDisponible(id)) {
+            return ("El libro con id " + id + " si se encuentra disponible, hay " + libroDTO.getUnidadesDisponibles() + " unidades disponibles");
+        }
+        return ("El libro con id " + id + " no se encuentra disponible, la fecha de último préstamo fue el " + libroDTO.getUnidadesDisponibles());
+    }
 }
