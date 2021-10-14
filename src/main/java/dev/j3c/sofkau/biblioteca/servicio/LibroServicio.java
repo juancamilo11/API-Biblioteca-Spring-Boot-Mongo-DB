@@ -27,14 +27,20 @@ public class LibroServicio {
         return libroMapper.fromCollectionList(libroList);
     }
 
-    public LibroDTO guardar(LibroDTO libroDTO) {
+    public LibroDTO guardarLibro(LibroDTO libroDTO) {
         Libro libro = libroMapper.fromDTO(libroDTO);
         return libroMapper.fromCollection(libroRepositorio.save(libro));
     }
 
-    public LibroDTO actualizar(LibroDTO libroDTO) {
+    public LibroDTO actualizarLibro(LibroDTO libroDTO) {
         Libro libro = libroMapper.fromDTO(libroDTO);
         libroRepositorio.findById(libro.getId()).orElseThrow(() -> new RuntimeException("Recurso con id: " + libroDTO.getId() + " no encontrado."));
         return libroMapper.fromCollection(libroRepositorio.save(libro));
     }
+
+    public void eliminarLibro(String id) {
+        libroRepositorio.findById(id).orElseThrow(() -> new RuntimeException("Recurso con id: " + id + " no encontrado."));
+        libroRepositorio.deleteById(id);
+    }
+
 }

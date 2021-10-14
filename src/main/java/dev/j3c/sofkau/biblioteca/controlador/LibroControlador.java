@@ -1,7 +1,6 @@
 package dev.j3c.sofkau.biblioteca.controlador;
 
 import dev.j3c.sofkau.biblioteca.dto.LibroDTO;
-import dev.j3c.sofkau.biblioteca.modelo.Libro;
 import dev.j3c.sofkau.biblioteca.servicio.LibroServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,17 +28,26 @@ public class LibroControlador {
 
     @PostMapping("/crear")
     public ResponseEntity<LibroDTO> crearNuevoLibro(@RequestBody LibroDTO libroDTO) {
-        return new ResponseEntity(libroServicio.guardar(libroDTO), HttpStatus.CREATED);
+        return new ResponseEntity(libroServicio.guardarLibro(libroDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/actualizar")
     public ResponseEntity<LibroDTO> actualizarLibro(@RequestBody LibroDTO libroDTO) {
         if (libroDTO.getId() != null) {
-            return new ResponseEntity(libroServicio.actualizar(libroDTO), HttpStatus.OK);
+            return new ResponseEntity(libroServicio.actualizarLibro(libroDTO), HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity eliminarLibro(@PathVariable("id") String id) {
+        try {
+            libroServicio.eliminarLibro(id);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+    }
 
 }
