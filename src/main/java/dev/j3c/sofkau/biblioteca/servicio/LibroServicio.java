@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -68,12 +69,16 @@ public class LibroServicio {
         if(libroDTO.getUnidadesDisponibles() == 1) {
             libroDTO.setUnidadesDisponibles(libroDTO.getUnidadesDisponibles() - 1);
             libroDTO.setUnidadesPrestadas(libroDTO.getUnidadesPrestadas() + 1);
-            libroDTO.setFechaUltimoPrestamo(LocalDateTime.now());
+            libroDTO.setFechaUltimoPrestamo(LocalDate.now());
             actualizarLibro(libroDTO);
             return ("Se ha prestado la última unidad del libro con " + id + " en la fecha " + getLibroPorId(id).getFechaUltimoPrestamo());
         }
+        if(!isDisponible(id)) {
+            return ("No quedan unidades disponibles del libro con id " + id + " puede esperar a que alguien devuelva una unidad.");
+        }
         libroDTO.setUnidadesDisponibles(libroDTO.getUnidadesDisponibles() - 1);
         libroDTO.setUnidadesPrestadas(libroDTO.getUnidadesPrestadas() + 1);
+        actualizarLibro(libroDTO);
         return ("Se ha prestado el libro con id " + id);
     }
 
@@ -84,6 +89,7 @@ public class LibroServicio {
         }
         libroDTO.setUnidadesDisponibles(libroDTO.getUnidadesDisponibles() + 1);
         libroDTO.setUnidadesPrestadas(libroDTO.getUnidadesPrestadas() - 1);
+        actualizarLibro(libroDTO);
         return ("Se ha devuelto el libro con id " + id);
     }
 

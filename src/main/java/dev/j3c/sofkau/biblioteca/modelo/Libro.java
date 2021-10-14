@@ -4,6 +4,7 @@ package dev.j3c.sofkau.biblioteca.modelo;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Document
@@ -16,7 +17,7 @@ public class Libro {
     private String categoria;
     private Integer unidadesDisponibles;
     private Integer unidadesPrestadas;
-    private LocalDateTime fechaUltimoPrestamo;
+    private LocalDate fechaUltimoPrestamo;
 
     public Libro() {
     }
@@ -83,11 +84,11 @@ public class Libro {
         this.unidadesPrestadas = unidadesPrestadas;
     }
 
-    public LocalDateTime getFechaUltimoPrestamo() {
+    public LocalDate getFechaUltimoPrestamo() {
         return fechaUltimoPrestamo;
     }
 
-    public void setFechaUltimoPrestamo(LocalDateTime fechaUltimoPrestamo) {
+    public void setFechaUltimoPrestamo(LocalDate fechaUltimoPrestamo) {
         this.fechaUltimoPrestamo = fechaUltimoPrestamo;
     }
 }

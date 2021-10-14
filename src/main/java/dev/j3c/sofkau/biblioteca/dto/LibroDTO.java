@@ -1,6 +1,7 @@
 package dev.j3c.sofkau.biblioteca.dto;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class LibroDTO {
@@ -11,7 +12,7 @@ public class LibroDTO {
     private String categoria;
     private Integer unidadesDisponibles;
     private Integer unidadesPrestadas;
-    private LocalDateTime fechaUltimoPrestamo;
+    private LocalDate fechaUltimoPrestamo;
 
     public LibroDTO() {
     }
@@ -20,7 +21,7 @@ public class LibroDTO {
         this.id = id;
     }
 
-    public LibroDTO(String id, String nombre, String tipo, String categoria, Integer unidadesDisponibles, Integer unidadesPrestadas, LocalDateTime fechaUltimoPrestamo) {
+    public LibroDTO(String id, String nombre, String tipo, String categoria, Integer unidadesDisponibles, Integer unidadesPrestadas, LocalDate fechaUltimoPrestamo) {
         this.id = id;
         this.nombre = nombre;
         this.tipo = tipo;
@@ -78,11 +79,11 @@ public class LibroDTO {
         this.unidadesPrestadas = unidadesPrestadas;
     }
 
-    public LocalDateTime getFechaUltimoPrestamo() {
+    public LocalDate getFechaUltimoPrestamo() {
         return fechaUltimoPrestamo;
     }
 
-    public void setFechaUltimoPrestamo(LocalDateTime fechaUltimoPrestamo) {
+    public void setFechaUltimoPrestamo(LocalDate fechaUltimoPrestamo) {
         this.fechaUltimoPrestamo = fechaUltimoPrestamo;
     }
 }
