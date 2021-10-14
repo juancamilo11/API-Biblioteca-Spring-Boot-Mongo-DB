@@ -5,8 +5,13 @@ import dev.j3c.sofkau.biblioteca.mapper.LibroMapper;
 import dev.j3c.sofkau.biblioteca.modelo.Libro;
 import dev.j3c.sofkau.biblioteca.repositorio.LibroRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -57,4 +62,21 @@ public class LibroServicio {
         }
         return ("El libro con id " + id + " no se encuentra disponible, la fecha de último préstamo fue el " + libroDTO.getUnidadesDisponibles());
     }
+
+    public String prestarLibro(String id) {
+        LibroDTO libroDTO = getLibroPorId(id);
+        if(libroDTO.getUnidadesDisponibles() == 1) {
+            libroDTO.setUnidadesDisponibles(libroDTO.getUnidadesDisponibles() - 1);
+            libroDTO.setUnidadesPrestadas(libroDTO.getUnidadesPrestadas() + 1);
+            libroDTO.setFechaUltimoPrestamo(LocalDateTime.now());
+            actualizarLibro(libroDTO);
+            return ("Se ha prestado la última unidad del libro con " + id + " en la fecha " + getLibroPorId(id).getFechaUltimoPrestamo());
+        }
+        libroDTO.setUnidadesDisponibles(libroDTO.getUnidadesDisponibles() - 1);
+        libroDTO.setUnidadesPrestadas(libroDTO.getUnidadesPrestadas() + 1);
+        return ("Se ha prestado el libro con id " + id);
+    }
+
+
+
 }

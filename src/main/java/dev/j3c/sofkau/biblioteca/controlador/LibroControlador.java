@@ -51,10 +51,13 @@ public class LibroControlador {
     }
 
     @GetMapping("/disponibilidad/{id}")
-    public ResponseEntity consultarDisponibilidad(@PathVariable("id") String id) {
+    public ResponseEntity consultarDisponibilidadLibro(@PathVariable("id") String id) {
         return new ResponseEntity(libroServicio.consultarDisponibilidad(id), HttpStatus.OK);
     }
 
-
+    @PutMapping("/prestar/{id}")
+    public ResponseEntity prestarLibro(@PathVariable("id") String id){
+        return  new ResponseEntity(libroServicio.prestarLibro(id), HttpStatus.OK);
+    }
 
 }
