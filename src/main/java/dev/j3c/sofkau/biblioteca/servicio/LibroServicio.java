@@ -77,6 +77,13 @@ public class LibroServicio {
         return ("Se ha prestado el libro con id " + id);
     }
 
-
-
+    public String devolverLibro(String id) {
+        LibroDTO libroDTO = getLibroPorId(id);
+        if(libroDTO.getUnidadesPrestadas() == 0) {
+            return ("Todos los libros con " + id + " han sido devueltos.");
+        }
+        libroDTO.setUnidadesDisponibles(libroDTO.getUnidadesDisponibles() + 1);
+        libroDTO.setUnidadesPrestadas(libroDTO.getUnidadesPrestadas() - 1);
+        return ("Se ha devuelto el libro con id " + id);
+    }
 }

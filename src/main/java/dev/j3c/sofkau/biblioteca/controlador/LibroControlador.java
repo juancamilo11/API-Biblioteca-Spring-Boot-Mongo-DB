@@ -60,4 +60,10 @@ public class LibroControlador {
         return  new ResponseEntity(libroServicio.prestarLibro(id), HttpStatus.OK);
     }
 
+    @PutMapping("/devolver/{id}")
+    public ResponseEntity devolverLibro(@PathVariable("id") String id){
+        return  new ResponseEntity(libroServicio.devolverLibro(id), HttpStatus.OK);
+    }
+
+
 }
