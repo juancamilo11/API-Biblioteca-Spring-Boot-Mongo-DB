@@ -87,6 +87,9 @@ public class LibroServicio {
         if(libroDTO.getUnidadesPrestadas() == 0) {
             return ("Todos los libros con " + id + " han sido devueltos.");
         }
+        if(libroDTO.getUnidadesDisponibles() == 1) {
+            libroDTO.setFechaUltimoPrestamo(null);
+        }
         libroDTO.setUnidadesDisponibles(libroDTO.getUnidadesDisponibles() + 1);
         libroDTO.setUnidadesPrestadas(libroDTO.getUnidadesPrestadas() - 1);
         actualizarLibro(libroDTO);
