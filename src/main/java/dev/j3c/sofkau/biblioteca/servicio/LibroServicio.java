@@ -86,4 +86,14 @@ public class LibroServicio {
         libroDTO.setUnidadesPrestadas(libroDTO.getUnidadesPrestadas() - 1);
         return ("Se ha devuelto el libro con id " + id);
     }
+
+    public List<LibroDTO> getLibrosPorCategoria(String categoria) {
+        List<Libro> libroList = libroRepositorio.findByCategoria(categoria);
+        return libroMapper.fromCollectionList(libroList);
+    }
+
+    public List<LibroDTO> getLibrosPorTipo(String tipo) {
+        List<Libro> libroList = libroRepositorio.findByCategoria(tipo);
+        return libroMapper.fromCollectionList(libroList);
+    }
 }

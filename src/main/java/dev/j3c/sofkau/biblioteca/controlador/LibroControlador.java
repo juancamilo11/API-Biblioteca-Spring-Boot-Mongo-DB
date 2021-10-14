@@ -65,5 +65,13 @@ public class LibroControlador {
         return  new ResponseEntity(libroServicio.devolverLibro(id), HttpStatus.OK);
     }
 
+    @GetMapping("/recomendar/categoria/{categoria}")
+    public ResponseEntity recomendarPorCategoria(@PathVariable("categoria") String categoria) {
+        return new ResponseEntity(libroServicio.getLibrosPorCategoria(categoria), HttpStatus.OK);
+    }
 
+    @GetMapping("/recomendar/tipo/{tipo}")
+    public ResponseEntity recomendarPorTipo(@PathVariable("tipo") String tipo) {
+        return new ResponseEntity(libroServicio.getLibrosPorTipo(tipo), HttpStatus.OK);
+    }
 }
