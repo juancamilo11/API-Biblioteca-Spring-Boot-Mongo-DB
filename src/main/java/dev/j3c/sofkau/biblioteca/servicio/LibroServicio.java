@@ -27,5 +27,10 @@ public class LibroServicio {
         return libroMapper.fromCollectionList(libroList);
     }
 
+    public LibroDTO guardar(LibroDTO libroDTO) {
+        Libro libro = libroMapper.fromDTO(libroDTO);
+        return libroMapper.fromCollection(libroRepositorio.save(libro));
+    }
+
 
 }
