@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/biblioteca")
 public class LibroControlador {
@@ -21,5 +23,12 @@ public class LibroControlador {
     public ResponseEntity<LibroDTO> findbyId(@PathVariable("id") String id) {
         return new ResponseEntity(libroServicio.getLibroPorId(id), HttpStatus.OK);
     }
+
+    @GetMapping()
+    public ResponseEntity<List<LibroDTO>> findAll() {
+        return new ResponseEntity(libroServicio.getLibros(), HttpStatus.OK);
+    }
+
+
 
 }
