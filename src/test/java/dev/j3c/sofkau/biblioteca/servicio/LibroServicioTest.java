@@ -11,6 +11,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -52,8 +54,8 @@ class LibroServicioTest {
     }
 
     @Test
-    @DisplayName("Testing creación de un nuevo libro - Exito")
-    void testAgregarUnNuevoLibroFail() {
+    @DisplayName("Testing creación de un nuevo libro - Fail")
+    void testAgregarUnNuevoLibroFail1() {
 
         // Arrange
         Libro libro = new Libro("1",
@@ -75,7 +77,7 @@ class LibroServicioTest {
     }
 
     @Test
-    @DisplayName("Testing creación de un nuevo libro - Exito")
+    @DisplayName("Testing creación de un nuevo libro - Fail")
     void testAgregarUnNuevoLibroFail2() {
 
         // Arrange
@@ -92,10 +94,32 @@ class LibroServicioTest {
         //Assert
 
         Throwable excepcion = assertThrows(IllegalArgumentException.class, () -> {
-            var resultado = libroServicio.guardarLibro(libroMapper.fromCollection(libro));
+           libroServicio.guardarLibro(libroMapper.fromCollection(libro));
         });
         assertEquals("Parámetros de ingreso del nuevo tipo de libro incorrectos, intente nuevamente", excepcion.getMessage());
-
     }
+
+    @Test
+    @DisplayName("Testing de obtención de un libro - Exito")
+    void obtenerPorId(){
+        Libro libro = new Libro("1",
+                "Nombre libro #1",     //Los datos tipo String no pueden estar vacíos
+                "Tipo libro #1",
+                "Categoria libro #1",
+                20,
+                0);
+
+        Mockito.when(libroRepositorio.findById(Mockito.any())).thenReturn(Optional.of(libro));
+
+        var resultado = libroServicio.getLibroPorId("1");
+        Assertions.assertEquals("1", resultado.getId());
+        Assertions.assertEquals("Nombre libro #1", resultado.getNombre());
+        Assertions.assertEquals("Tipo libro #1", resultado.getTipo());
+        Assertions.assertEquals("Categoria libro #1", resultado.getCategoria());
+        Assertions.assertEquals(20, resultado.getUnidadesDisponibles());
+        Assertions.assertEquals(0, resultado.getUnidadesPrestadas());
+    }
+
+
 
 }
