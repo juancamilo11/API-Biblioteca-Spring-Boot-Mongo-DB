@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class LibroServicio {
@@ -24,6 +25,7 @@ public class LibroServicio {
     private LibroMapper libroMapper = new LibroMapper();
 
     public LibroDTO getLibroPorId(String id) {
+        Objects.requireNonNull(id);
         Libro libro = libroRepositorio.findById(id).orElseThrow(() -> new RuntimeException("Recurso con id " + id + " no encontrado."));
         return libroMapper.fromCollection(libro);
     }
@@ -34,8 +36,27 @@ public class LibroServicio {
     }
 
     public LibroDTO guardarLibro(LibroDTO libroDTO) {
-        Libro libro = libroMapper.fromDTO(libroDTO);
-        return libroMapper.fromCollection(libroRepositorio.save(libro));
+        if(datosValidos(libroDTO)) {
+            Libro libro = libroMapper.fromDTO(libroDTO);
+            return libroMapper.fromCollection(libroRepositorio.save(libro));
+        }
+        throw new IllegalArgumentException("Parámetros de ingreso del nuevo tipo de libro incorrectos, intente nuevamente");
+    }
+
+    private boolean datosValidos(LibroDTO libroDTO) {
+        if(libroDTO.getNombre().trim().isBlank()) {
+            return false;
+        }
+        if(libroDTO.getCategoria().trim().isBlank()) {
+            return false;
+        }
+        if(libroDTO.getTipo().trim().isBlank()) {
+            return false;
+        }
+        if(libroDTO.getUnidadesDisponibles() <= 0) {
+            return false;
+        }
+        return true;
     }
 
     public LibroDTO actualizarLibro(LibroDTO libroDTO) {
@@ -45,18 +66,21 @@ public class LibroServicio {
     }
 
     public void eliminarLibro(String id) {
+        Objects.requireNonNull(id);
         libroRepositorio.findById(id).orElseThrow(() -> new RuntimeException("Recurso con id: " + id + " no encontrado."));
         libroRepositorio.deleteById(id);
     }
 
-    private boolean isDisponible(String idLibro) {
-        if(getLibroPorId(idLibro).getUnidadesDisponibles() > 0) {
+    private boolean isDisponible(String id) {
+        Objects.requireNonNull(id);
+        if(getLibroPorId(id).getUnidadesDisponibles() > 0) {
             return true;
         }
         return false;
     }
 
     public String consultarDisponibilidad(String id) {
+        Objects.requireNonNull(id);
         LibroDTO libroDTO = getLibroPorId(id);
         if(isDisponible(id)) {
             return ("El libro con id " + id + " si se encuentra disponible, hay " + libroDTO.getUnidadesDisponibles() + " unidades disponibles");
@@ -65,6 +89,7 @@ public class LibroServicio {
     }
 
     public String prestarLibro(String id) {
+        Objects.requireNonNull(id);
         LibroDTO libroDTO = getLibroPorId(id);
         if(libroDTO.getUnidadesDisponibles() == 1) {
             libroDTO.setUnidadesDisponibles(libroDTO.getUnidadesDisponibles() - 1);
@@ -83,6 +108,7 @@ public class LibroServicio {
     }
 
     public String devolverLibro(String id) {
+        Objects.requireNonNull(id);
         LibroDTO libroDTO = getLibroPorId(id);
         if(libroDTO.getUnidadesPrestadas() == 0) {
             return ("Todos los libros con " + id + " han sido devueltos.");
@@ -97,11 +123,13 @@ public class LibroServicio {
     }
 
     public List<LibroDTO> getLibrosPorCategoria(String categoria) {
+        Objects.requireNonNull(categoria);
         List<Libro> libroList = libroRepositorio.findByCategoria(categoria);
         return libroMapper.fromCollectionList(libroList);
     }
 
     public List<LibroDTO> getLibrosPorTipo(String tipo) {
+        Objects.requireNonNull(tipo);
         List<Libro> libroList = libroRepositorio.findByCategoria(tipo);
         return libroMapper.fromCollectionList(libroList);
     }

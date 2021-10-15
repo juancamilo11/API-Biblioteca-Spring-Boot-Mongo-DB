@@ -45,7 +45,6 @@ public class LibroControlador {
             libroServicio.eliminarLibro(id);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }

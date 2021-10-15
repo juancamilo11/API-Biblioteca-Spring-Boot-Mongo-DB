@@ -21,7 +21,7 @@ public class LibroDTO {
         this.id = id;
     }
 
-    public LibroDTO(String id, String nombre, String tipo, String categoria, Integer unidadesDisponibles, Integer unidadesPrestadas, LocalDate fechaUltimoPrestamo) {
+    public LibroDTO(String id, String nombre, String tipo, String categoria, Integer unidadesDisponibles) {
         this.id = id;
         this.nombre = nombre;
         this.tipo = tipo;

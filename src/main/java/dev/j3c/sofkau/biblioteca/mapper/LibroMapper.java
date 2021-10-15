@@ -3,12 +3,13 @@ package dev.j3c.sofkau.biblioteca.mapper;
 
 import dev.j3c.sofkau.biblioteca.dto.LibroDTO;
 import dev.j3c.sofkau.biblioteca.modelo.Libro;
+import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@Component
 public class LibroMapper {
 
     public Libro fromDTO(LibroDTO libroDTO) {
