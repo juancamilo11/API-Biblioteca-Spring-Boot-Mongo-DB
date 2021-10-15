@@ -27,8 +27,17 @@ public class LibroDTO {
         this.tipo = tipo;
         this.categoria = categoria;
         this.unidadesDisponibles = unidadesDisponibles;
+        this.unidadesPrestadas = 0;
+        this.fechaUltimoPrestamo = null;
+    }
+
+    public LibroDTO(String id, String nombre, String tipo, String categoria, Integer unidadesDisponibles, Integer unidadesPrestadas) {
+        this.id = id;
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.categoria = categoria;
+        this.unidadesDisponibles = unidadesDisponibles;
         this.unidadesPrestadas = unidadesPrestadas;
-        this.fechaUltimoPrestamo = fechaUltimoPrestamo;
     }
 
     public String getId() {

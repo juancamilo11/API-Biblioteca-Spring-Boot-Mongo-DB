@@ -1,8 +1,10 @@
 package dev.j3c.sofkau.biblioteca.servicio;
 
+import dev.j3c.sofkau.biblioteca.dto.LibroDTO;
 import dev.j3c.sofkau.biblioteca.mapper.LibroMapper;
 import dev.j3c.sofkau.biblioteca.modelo.Libro;
 import dev.j3c.sofkau.biblioteca.repositorio.LibroRepositorio;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +13,9 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -119,7 +124,5 @@ class LibroServicioTest {
         Assertions.assertEquals(20, resultado.getUnidadesDisponibles());
         Assertions.assertEquals(0, resultado.getUnidadesPrestadas());
     }
-
-
 
 }
