@@ -43,7 +43,7 @@ public class LibroControlador {
     public ResponseEntity eliminarLibro(@PathVariable("id") String id) {
         try {
             libroServicio.eliminarLibro(id);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity("El libro con id " + id + "se ha eliminado exitosamente.", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }

@@ -62,6 +62,9 @@ public class LibroServicio {
     public LibroDTO actualizarLibro(LibroDTO libroDTO) {
         Libro libro = libroMapper.fromDTO(libroDTO);
         libroRepositorio.findById(libro.getId()).orElseThrow(() -> new RuntimeException("Recurso con id: " + libroDTO.getId() + " no encontrado."));
+        if(libroDTO.getUnidadesDisponibles() < 0 || libroDTO.getUnidadesPrestadas() < 0) {
+            throw  new RuntimeException("Cantidades de numero de unidades disponibles o unidades prestadas invalidas.");
+        }
         return libroMapper.fromCollection(libroRepositorio.save(libro));
     }
 
@@ -85,7 +88,7 @@ public class LibroServicio {
         if(isDisponible(id)) {
             return ("El libro con id " + id + " si se encuentra disponible, hay " + libroDTO.getUnidadesDisponibles() + " unidades disponibles");
         }
-        return ("El libro con id " + id + " no se encuentra disponible, la fecha de último préstamo fue el " + libroDTO.getUnidadesDisponibles());
+        return ("El libro con id " + id + " no se encuentra disponible, la fecha de último préstamo fue el " + libroDTO.getFechaUltimoPrestamo());
     }
 
     public String prestarLibro(String id) {
@@ -104,7 +107,8 @@ public class LibroServicio {
         libroDTO.setUnidadesDisponibles(libroDTO.getUnidadesDisponibles() - 1);
         libroDTO.setUnidadesPrestadas(libroDTO.getUnidadesPrestadas() + 1);
         actualizarLibro(libroDTO);
-        return ("Se ha prestado el libro con id " + id);
+        return ("Se ha prestado el libro con id " + id +  ", en total se han prestado " + libroDTO.getUnidadesPrestadas() +
+                        " unidades y quedan aún disponibles " + libroDTO.getUnidadesDisponibles() + " unidades.");
     }
 
     public String devolverLibro(String id) {
@@ -119,7 +123,8 @@ public class LibroServicio {
         libroDTO.setUnidadesDisponibles(libroDTO.getUnidadesDisponibles() + 1);
         libroDTO.setUnidadesPrestadas(libroDTO.getUnidadesPrestadas() - 1);
         actualizarLibro(libroDTO);
-        return ("Se ha devuelto el libro con id " + id);
+        return ("Se ha devuelto un libro con id " + id + ", en total se han prestado " + libroDTO.getUnidadesPrestadas() +
+                " unidades y quedan aún disponibles " + libroDTO.getUnidadesDisponibles() + " unidades.");
     }
 
     public List<LibroDTO> getLibrosPorCategoria(String categoria) {

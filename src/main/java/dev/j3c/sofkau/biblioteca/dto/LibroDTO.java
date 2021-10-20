@@ -10,8 +10,8 @@ public class LibroDTO {
     private String nombre;
     private String tipo;
     private String categoria;
-    private Integer unidadesDisponibles;
-    private Integer unidadesPrestadas;
+    private int unidadesDisponibles;
+    private int unidadesPrestadas;
     private LocalDate fechaUltimoPrestamo;
 
     public LibroDTO() {
