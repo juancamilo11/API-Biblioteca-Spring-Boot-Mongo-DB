@@ -99,7 +99,7 @@ public class LibroServicio {
             libroDTO.setUnidadesPrestadas(libroDTO.getUnidadesPrestadas() + 1);
             libroDTO.setFechaUltimoPrestamo(LocalDate.now());
             actualizarLibro(libroDTO);
-            return ("Se ha prestado la última unidad del libro con " + id + " en la fecha " + getLibroPorId(id).getFechaUltimoPrestamo());
+            return ("Se ha prestado la última unidad del libro con id " + id + " en la fecha " + getLibroPorId(id).getFechaUltimoPrestamo());
         }
         if(!isDisponible(id)) {
             return ("No quedan unidades disponibles del libro con id " + id + " puede esperar a que alguien devuelva una unidad.");
@@ -135,7 +135,16 @@ public class LibroServicio {
 
     public List<LibroDTO> getLibrosPorTipo(String tipo) {
         Objects.requireNonNull(tipo);
-        List<Libro> libroList = libroRepositorio.findByCategoria(tipo);
+        List<Libro> libroList = libroRepositorio.findByTipo(tipo);
         return libroMapper.fromCollectionList(libroList);
     }
+
+    public List<LibroDTO> getLibrosPorTipoYCategoria(String tipo, String categoria) {
+        Objects.requireNonNull(tipo);
+        Objects.requireNonNull(categoria);
+        List<Libro> libroList = libroRepositorio.findByTipoAndCategoria(tipo, categoria);
+        return libroMapper.fromCollectionList(libroList);
+    }
+
+
 }

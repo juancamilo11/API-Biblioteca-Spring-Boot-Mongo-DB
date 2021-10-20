@@ -10,4 +10,5 @@ import java.util.List;
 public interface LibroRepositorio extends MongoRepository<Libro, String> {
     List<Libro> findByTipo(final String tipo);
     List<Libro> findByCategoria(final String categoria);
+    List<Libro> findByTipoAndCategoria(final String tipo, final String categoria);
 }

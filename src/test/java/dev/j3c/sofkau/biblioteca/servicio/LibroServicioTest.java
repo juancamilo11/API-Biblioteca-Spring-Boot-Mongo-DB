@@ -16,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -309,6 +310,28 @@ class LibroServicioTest {
     }
 
     @Test
+    @DisplayName("Testing de prestar un libro cuando sólo hay 1 unidad disponible - Exito") //prestarLibro
+    void prestarLibroUnaUnidadDisponible(){
+
+        // Arrange
+        var libro = new Libro("10",
+                "Nombre libro #10",
+                "Tipo libro #10",
+                "Categoria libro #10",
+                1,
+                9);
+        libro.setFechaUltimoPrestamo(LocalDate.now().minusDays(5));
+        Mockito.when(libroRepositorio.findById(libro.getId())).thenReturn(Optional.of(libro));
+        Mockito.when(libroRepositorio.save(Mockito.any())).thenReturn(libro);
+
+        // Act
+        var resultado = libroServicio.prestarLibro(libro.getId());
+
+        // Assert
+        Assertions.assertEquals("Se ha prestado la última unidad del libro con id " + libro.getId() + " en la fecha " + LocalDate.now().minusDays(5), resultado);
+    }
+
+    @Test
     @DisplayName("Testing de prestar un libro no disponible - Fail") //prestarLibro
     void prestarLibroNoDisponible(){
 
@@ -371,4 +394,152 @@ class LibroServicioTest {
         // Assert
         Assertions.assertEquals("Todos los libros con 10 han sido devueltos.", resultado);
     }
+
+    List<Libro> getLibros() {
+        return Lists.newArrayList(
+                new Libro("1",
+                        "El origen de las especies",
+                        "Revista",
+                        "Ciencia",
+                        20,
+                        15),
+                new Libro("2",
+                        "El futuro de nuestra mente",
+                        "Articulo",
+                        "Ciencia",
+                        15,
+                        5),
+                new Libro("3",
+                        "El intrigante futuro de la humanidad",
+                        "Libro",
+                        "Ciencia",
+                        100,
+                        30),
+                new Libro("4",
+                        "Como educar a los niños entre 5 y 10 años",
+                        "Revista",
+                        "Educacion",
+                        100,
+                        45),
+                new Libro("5",
+                        "Como educar a tus mascotas",
+                        "Revista",
+                        "Educacion",
+                        100,
+                        32),
+                new Libro("6",
+                        "Don quijote",
+                        "Libro",
+                        "Literatura",
+                        5,
+                        3),
+                new Libro("7",
+                        "The magic mountain",
+                        "Libro",
+                        "Literatura",
+                        15,
+                        5),
+                new Libro("8",
+                        "El origen de las matematicas en la India",
+                        "Revista",
+                        "Educacion",
+                        100,
+                        4));
+    }
+
+    @Test
+    @DisplayName("Testing de traer todos los libros por tipo - Exito") //getLibrosPorTipo
+    void getLibrosPorTipo() {
+
+        // Arrange
+        String tipo = "Revista";
+        Mockito.when(libroRepositorio.findByTipo(tipo)).thenReturn(getLibros().stream().filter(libro -> libro.getTipo().equalsIgnoreCase(tipo)).collect(Collectors.toList()));
+
+        // Act
+        var listaResultados = libroServicio.getLibrosPorTipo(tipo);
+
+        // Assert
+        Assertions.assertEquals(4, listaResultados.size());
+
+        Assertions.assertEquals("1", listaResultados.get(0).getId());
+        Assertions.assertEquals("El origen de las especies", listaResultados.get(0).getNombre());
+        Assertions.assertEquals("Revista", listaResultados.get(0).getTipo());
+        Assertions.assertEquals(15,listaResultados.get(0).getUnidadesPrestadas());
+
+        Assertions.assertEquals("4", listaResultados.get(1).getId());
+        Assertions.assertEquals("Como educar a los niños entre 5 y 10 años", listaResultados.get(1).getNombre());
+        Assertions.assertEquals("Revista", listaResultados.get(1).getTipo());
+        Assertions.assertEquals(45,listaResultados.get(1).getUnidadesPrestadas());
+
+        Assertions.assertEquals("5", listaResultados.get(2).getId());
+        Assertions.assertEquals("Como educar a tus mascotas", listaResultados.get(2).getNombre());
+        Assertions.assertEquals("Revista", listaResultados.get(2).getTipo());
+        Assertions.assertEquals(32,listaResultados.get(2).getUnidadesPrestadas());
+    }
+
+    @Test
+    @DisplayName("Testing de traer todos los libros por categoria - Exito") //getLibrosPorCategoria
+    void getLibrosPorCategoria() {
+
+        // Arrange
+        String categoria = "Ciencia";
+        Mockito.when(libroRepositorio.findByCategoria(categoria)).thenReturn(getLibros().stream().filter(libro -> libro.getCategoria().equalsIgnoreCase(categoria)).collect(Collectors.toList()));
+
+        // Act
+        var listaResultados = libroServicio.getLibrosPorCategoria(categoria);
+
+        // Assert
+        Assertions.assertEquals(3, listaResultados.size());
+
+        Assertions.assertEquals("1", listaResultados.get(0).getId());
+        Assertions.assertEquals("El origen de las especies", listaResultados.get(0).getNombre());
+        Assertions.assertEquals("Ciencia", listaResultados.get(0).getCategoria());
+        Assertions.assertEquals(15,listaResultados.get(0).getUnidadesPrestadas());
+
+        Assertions.assertEquals("2", listaResultados.get(1).getId());
+        Assertions.assertEquals("El futuro de nuestra mente", listaResultados.get(1).getNombre());
+        Assertions.assertEquals("Ciencia", listaResultados.get(1).getCategoria());
+        Assertions.assertEquals(5,listaResultados.get(1).getUnidadesPrestadas());
+
+        Assertions.assertEquals("3", listaResultados.get(2).getId());
+        Assertions.assertEquals("El intrigante futuro de la humanidad", listaResultados.get(2).getNombre());
+        Assertions.assertEquals("Ciencia", listaResultados.get(2).getCategoria());
+        Assertions.assertEquals(30,listaResultados.get(2).getUnidadesPrestadas());
+    }
+
+    @Test
+    @DisplayName("Testing de traer todos los libros por tipo y categoria - Exito") //getLibrosPorTipoYCategoria
+    void getLibrosPorTipoYCategoria() {
+
+        // Arrange
+        String tipo = "Revista";
+        String categoria = "Educacion";
+
+        Mockito.when(libroRepositorio
+                        .findByTipoAndCategoria(tipo, categoria))
+                .thenReturn(getLibros().stream().filter(libro -> (libro.getTipo().equalsIgnoreCase(tipo) && (libro.getCategoria().equalsIgnoreCase(categoria))))
+                        .collect(Collectors.toList()));
+
+        // Act
+        var listaResultados = libroServicio.getLibrosPorTipoYCategoria(tipo, categoria);
+
+        // Assert
+        Assertions.assertEquals(3, listaResultados.size());
+
+        Assertions.assertEquals("4", listaResultados.get(0).getId());
+        Assertions.assertEquals("Como educar a los niños entre 5 y 10 años", listaResultados.get(0).getNombre());
+        Assertions.assertEquals("Revista", listaResultados.get(0).getTipo());
+        Assertions.assertEquals(45,listaResultados.get(0).getUnidadesPrestadas());
+
+        Assertions.assertEquals("5", listaResultados.get(1).getId());
+        Assertions.assertEquals("Como educar a tus mascotas", listaResultados.get(1).getNombre());
+        Assertions.assertEquals("Revista", listaResultados.get(1).getTipo());
+        Assertions.assertEquals(32,listaResultados.get(1).getUnidadesPrestadas());
+
+        Assertions.assertEquals("8", listaResultados.get(2).getId());
+        Assertions.assertEquals("El origen de las matematicas en la India", listaResultados.get(2).getNombre());
+        Assertions.assertEquals("Revista", listaResultados.get(2).getTipo());
+        Assertions.assertEquals(4,listaResultados.get(2).getUnidadesPrestadas());
+    }
+
 }

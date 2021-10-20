@@ -73,4 +73,9 @@ public class LibroControlador {
     public ResponseEntity recomendarPorTipo(@PathVariable("tipo") String tipo) {
         return new ResponseEntity(libroServicio.getLibrosPorTipo(tipo), HttpStatus.OK);
     }
+
+    @GetMapping("/recomendar/tipo/{tipo}/categoria/{categoria}")
+    public ResponseEntity recomendarPorTipoYCategoria(@PathVariable("tipo") String tipo,@PathVariable("categoria") String categoria) {
+        return new ResponseEntity(libroServicio.getLibrosPorTipoYCategoria(tipo, categoria), HttpStatus.OK);
+    }
 }
